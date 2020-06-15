@@ -26,9 +26,13 @@ function updateCardPositions(){
     var board = $("#board");
     board.empty();
 
+    addLines();
+
     cardLabels.forEach(card => {
         board.append(card.html);
     });
+
+
 
 }
 
@@ -224,22 +228,8 @@ $(document).ready(() => {
         }
     })
 
-
-    var thickness = 0.25;
-    createLine( 15, 0, thickness, 100 );
-    createLine( 85, 0, thickness, 100 );
-
-
-    createLine( 0, 27, 100, thickness );
-
-    for(var i=0; i < 7; i++)
-        createLine( 15 + (i*10), 27, thickness, 73 );
-    
-        
-    for(var i=3; i < 7; i++)
-        createLine( 15 + (i*10), 0, thickness, 27 );
-
-    createLine( 25, 0, thickness, 27 );
+    addLines();
+   
 });
 
 
@@ -259,6 +249,25 @@ jQuery.fn.insertAt = function(index, element) {
 }
 
 
+
+
+function addLines(){
+    var thickness = 0.25;
+    createLine( 15, 0, thickness, 100 );
+    createLine( 85, 0, thickness, 100 );
+
+
+    createLine( 0, 27, 100, thickness );
+
+    for(var i=0; i < 7; i++)
+        createLine( 15 + (i*10), 27, thickness, 73 );
+    
+        
+    for(var i=3; i < 7; i++)
+        createLine( 15 + (i*10), 0, thickness, 27 );
+
+    createLine( 25, 0, thickness, 27 );
+}
 
 
 function createLine(xPerc, yPerc, width, height){
