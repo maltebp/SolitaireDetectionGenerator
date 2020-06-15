@@ -1,0 +1,60 @@
+
+
+.card {
+    border: dashed 2px;
+    background-color: #00000033;
+}
+
+
+
+.card p {
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    width: 100%;
+    text-align: center;
+
+    /* Make label unselectable */
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.cardLabel {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: fit-content;
+    margin: 0;
+
+    font-size: 60%;
+    font-weight: 800;
+}
+
+
+
+.cardConfidence {
+    position: absolute;
+    bottom: 0%;
+    left: 0px;
+    height: fit-content;
+    margin: 0;
+
+    font-size: 60%;
+    font-weight: 500;
+}
+
+
+
+
+/* 
+label.style
+label.style.fontSize = "12px";
+label.style.fontFamily = ""
+label
+label.style.position = "absolute";
+label.style.margin = "0px";
+label.style.marginTop = "-10%";
+label.style.top = "0px";
+label.style.left = "0px"; */
