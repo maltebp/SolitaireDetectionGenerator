@@ -12,6 +12,9 @@ var dragX = 0;
 var dragY = 0;
 
 
+
+
+
 function removeCardLabel(cardLabel){
     cardLabels.splice(cardLabels.indexOf(cardLabel), 1);
     updateCardPositions();
@@ -31,14 +34,26 @@ function updateCardPositions(){
     cardLabels.forEach(card => {
         board.append(card.html);
     });
-
-
-
 }
 
 
-function createCard(suit, value){
-    var card = new Card(suit, value, mouseX, mouseY)
+function setPlacement(cardIdentifier, placement){
+    cardPlacement[cardIdentifier.toUpperCase()] = placement.toUpperCase();
+    updateCardTable();
+}
+
+
+function addDetection(detection){
+    cardLabels.push(detection);
+    $("#board").append(detection.html);
+    updateCardTable();
+}
+
+
+function createCardLabel(suit, value, x=-1, y=-1, placement){
+    if( x=-1) x = mouseX;
+    if( y=-1) y = mouseY;
+    var card = new Card(suit, value, x, y)
     cardLabels.push(card);
     $("#board").append(card.html);
 
@@ -78,7 +93,7 @@ function consoleInput(input){
         var suitLetter = input.charAt(0);
         for(var i=0; i < SUITS.length; i++){
             if( suitLetter == SUITS[i].charAt(0) ){
-                createCard(SUITS[i],value)
+                createCardLabel(SUITS[i],value)
             }
         }
     }
@@ -89,26 +104,18 @@ function consoleInput(input){
 
         if( placement.substring(0,1) == "t" ){
             var value = parseInt(placement.substring(1, placement.length));
-            if( value >= 1 && value <= 7 ){
-                cardPlacement[tokens[0].toUpperCase()] = placement.toUpperCase();
-                console.log(cardPlacement);
-                updateCardTable();
-            }
+            if( value >= 1 && value <= 7 )
+                setPlacement(tokens[0], placement);
         }
 
-        if( placement.substring(0,1) == "d" ){
-            cardPlacement[tokens[0].toUpperCase()] = placement.toUpperCase();
-            console.log(cardPlacement);
-            updateCardTable();
-        }
+        if( placement.substring(0,1) == "d" )
+            setPlacement(tokens[0], placement);
 
         if( placement.substring(0,1) == "f" ){
             var value = parseInt(placement.substring(1, placement.length));
-            if( value >= 1 && value <= 4 ){
-                cardPlacement[tokens[0].toUpperCase()] = placement.toUpperCase();
-                console.log(cardPlacement);
-                updateCardTable();
-            }
+            if( value >= 1 && value <= 4 )
+                setPlacement(tokens[0], placement);
+            
         }
 
             
@@ -141,11 +148,30 @@ function consoleInput(input){
         }
     }
 
+    if( tokens.length == 1 && tokens[0] === "load" ){
+        try{
+            loadFile();
+        }catch(err){
+            if( err.name === "CardError")
+                alert(err.message);
+            else{
+                alert("An error occured!");
+                throw err;
+            }
+        }
+    }
+
     
     // Save command
     if( tokens.length ==1 && tokens[0] === "noise" ){
         noise();
     }
+
+    if( tokens.length == 1 && tokens[0] === "placements" ){
+        console.log(cardPlacement);
+    }
+
+   
 
 }
 

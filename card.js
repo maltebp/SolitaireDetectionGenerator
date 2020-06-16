@@ -9,6 +9,17 @@ const SUITS = [
     SUIT_SPADES, SUIT_DIAMONDS, SUIT_CLUBS, SUIT_HEARTS
 ];
 
+// Returns the suit which first letter matches the given letter
+function letterToSuit(letter){
+    letter = letter.toLowerCase();
+    matchingSuit = null;
+    SUITS.forEach(suit => {
+        if( suit.substring(0,1) === letter )
+            matchingSuit = suit;
+    });
+    return matchingSuit;
+}
+
 
 class Card{
 

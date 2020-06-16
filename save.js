@@ -8,9 +8,11 @@ function buildTableaus(detections, placements){
         var tableau = []
 
         // Find cards that are in the tableau
-        for( var card in placements ){
-            if( placements[card] === tableauIdentifer )
-                tableau.push( detections[card] );
+        for( var cardIdentifier in placements ){
+            if( placements[cardIdentifier] === tableauIdentifer ){
+                if( cardIdentifier in detections )
+                tableau.push( detections[cardIdentifier] );
+            }
         }
 
         // Sort the tableau according to y value (lowest one first)
@@ -41,7 +43,7 @@ function buildDrawn(detections, placements){
     cleanedDrawn = [];
     drawn.forEach(detection => cleanedDrawn.push(detection.getIdentifier()));
 
-    return drawn;
+    return cleanedDrawn;
 }
 
 
@@ -52,17 +54,21 @@ function buildFoundations(detections, placements){
     for( var i=1; i<=4; i++ ){
         var foundationIdentifier = "F"+i;
         
+        var foundationEmpty = true;
         // Find cards that are in the tableau
         for( var card in placements ){
             if( placements[card] === foundationIdentifier ){
-                foundations.push( detections[card] );
+                foundations.push( detections[card].getIdentifier() );
+                foundationEmpty = false;
                 break;
             }
         }
+        if( foundationEmpty )
+            foundations.push( "" );
     }
 
-    cleanedFoundations = [];
-    foundations.forEach(detection => cleanedFoundations.push(detection.getIdentifier()));
+    // cleanedFoundations = [];
+    // foundations.forEach(detection => cleanedFoundations.push(detection.getIdentifier()));
 
     return foundations;
 }
@@ -84,7 +90,7 @@ function buildExpectedResults(cardLabels, placements){
 
      expectedResults["tableaus"] = buildTableaus(sortedCardLabels, placements);
      expectedResults["foundations"] = buildFoundations(sortedCardLabels, placements);
-     expectedResults["drawn"] = buildFoundations(sortedCardLabels, placements);
+     expectedResults["drawn"] = buildDrawn(sortedCardLabels, placements);
 
      return expectedResults;
 }
@@ -134,11 +140,22 @@ function saveData(cardLabels, placements, width, height){
         }
     });
 
+    // Clean up placements, so that we only have placements that actually have cards
+    var cleanedPlacements = {};
+    for( var cardIdentifier in placements ){
+        var foundCard = false;
+        cardLabels.forEach(cardLabel => {
+            if( cardIdentifier == cardLabel.getIdentifier() )
+                foundCard = true;
+        });
+        if( foundCard )
+            cleanedPlacements[cardIdentifier] = placements[cardIdentifier];
+    }
+
 
     var data = buildData(cardLabels, placements, width, height);
 
-    download(JSON.stringify(data), "test.json", "text");
-
+    download(JSON.stringify(data, null, 4), "test.json", "text");
 }
 
 
